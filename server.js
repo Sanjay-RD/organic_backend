@@ -12,6 +12,8 @@ app.use(cors());
 
 // route
 const userRoute = require("./routes/userRoute");
+const productRoute = require("./routes/productRoute");
+const uploadRoute = require("./routes/uploadRoute");
 
 // connection to database
 db.authenticate()
@@ -25,6 +27,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use("/api/user", userRoute);
+app.use("/api/product", productRoute);
+app.use("/api/upload", uploadRoute);
+
+let __variableOfChoice = path.resolve();
+console.log(path.join(__variableOfChoice, "/uploads"));
+app.use("/uploads", express.static(path.join(__variableOfChoice, "/uploads")));
 
 // error handler
 app.use(notFound);
