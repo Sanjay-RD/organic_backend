@@ -60,7 +60,7 @@ const addProduct = asyncHandler(async (req, res) => {
 // @route    PUT /api/product/:id
 // @Access   private
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, price, description, image, category } = req.body;
+  const { name, price, description, image, category, sub_category } = req.body;
 
   const product = await Product.findOne({
     where: {

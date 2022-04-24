@@ -14,6 +14,7 @@ app.use(cors());
 const userRoute = require("./routes/userRoute");
 const productRoute = require("./routes/productRoute");
 const uploadRoute = require("./routes/uploadRoute");
+const orderRoute = require("./routes/orderRoute");
 
 // connection to database
 db.authenticate()
@@ -29,6 +30,7 @@ app.use(bodyParser.json());
 app.use("/api/user", userRoute);
 app.use("/api/product", productRoute);
 app.use("/api/upload", uploadRoute);
+app.use("/api/order", orderRoute);
 
 let __variableOfChoice = path.resolve();
 console.log(path.join(__variableOfChoice, "/uploads"));
