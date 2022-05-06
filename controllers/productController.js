@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const { Product } = require("../models");
+const { Product, sequelize } = require("../models");
 const { Op } = require("sequelize");
 
 // @des      Get All Product
@@ -30,6 +30,93 @@ const getProduct = asyncHandler(async (req, res) => {
   } else {
     res.status(400);
     throw new Error("Product Not Found");
+  }
+});
+
+// @des      Get Product By Sub-Category
+// @route    GET /api/product/category/:tag/:filterId
+// @Access   public
+const getProductBycategory = asyncHandler(async (req, res) => {
+  console.log(req.params.filterId);
+  if (req.params.filterId === "1") {
+    const product = await Product.findAll({
+      order: [
+        // Will escape title and validate DESC against a list of valid direction parameters
+        ["name", "ASC"],
+      ],
+      where: {
+        sub_category: req.params.tag,
+      },
+    });
+    if (product) {
+      res.status(200);
+      res.json(product);
+    } else {
+      res.status(400);
+      throw new Error("Product Not Found");
+    }
+  } else if (req.params.filterId === "2") {
+    const product = await Product.findAll({
+      order: [
+        // Will escape title and validate DESC against a list of valid direction parameters
+        ["name", "DESC"],
+      ],
+      where: {
+        sub_category: req.params.tag,
+      },
+    });
+    if (product) {
+      res.status(200);
+      res.json(product);
+    } else {
+      res.status(400);
+      throw new Error("Product Not Found");
+    }
+  } else if (req.params.filterId === "3") {
+    // console.log(sequelize.fn("max", sequelize.col("price")));
+    const product = await Product.findAll({
+      order: sequelize.col("price"),
+      where: {
+        sub_category: req.params.tag,
+      },
+    });
+    if (product) {
+      res.status(200);
+      res.json(product);
+    } else {
+      res.status(400);
+      throw new Error("Product Not Found");
+    }
+  } else if (req.params.filterId === "4") {
+    const product = await Product.findAll({
+      order: [
+        // Will escape title and validate DESC against a list of valid direction parameters
+        ["price", "DESC"],
+      ],
+      where: {
+        sub_category: req.params.tag,
+      },
+    });
+    if (product) {
+      res.status(200);
+      res.json(product);
+    } else {
+      res.status(400);
+      throw new Error("Product Not Found");
+    }
+  } else {
+    const product = await Product.findAll({
+      where: {
+        sub_category: req.params.tag,
+      },
+    });
+    if (product) {
+      res.status(200);
+      res.json(product);
+    } else {
+      res.status(400);
+      throw new Error("Product Not Found");
+    }
   }
 });
 
@@ -113,4 +200,5 @@ module.exports = {
   addProduct,
   updateProduct,
   deleteProduct,
+  getProductBycategory,
 };
