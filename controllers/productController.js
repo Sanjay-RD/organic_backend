@@ -75,7 +75,7 @@ const getProductBycategory = asyncHandler(async (req, res) => {
   } else if (req.params.filterId === "3") {
     // console.log(sequelize.fn("max", sequelize.col("price")));
     const product = await Product.findAll({
-      order: sequelize.col("price"),
+      order: [["price", "ASC"]],
       where: {
         sub_category: req.params.tag,
       },
@@ -89,10 +89,7 @@ const getProductBycategory = asyncHandler(async (req, res) => {
     }
   } else if (req.params.filterId === "4") {
     const product = await Product.findAll({
-      order: [
-        // Will escape title and validate DESC against a list of valid direction parameters
-        ["price", "DESC"],
-      ],
+      order: [["price", "DESC"]],
       where: {
         sub_category: req.params.tag,
       },
